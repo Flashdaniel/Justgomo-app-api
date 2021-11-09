@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.http import request
 from rest_framework import status
 from rest_framework.views import APIView
@@ -26,7 +27,7 @@ class ValidatePhone(APIView):
                 if str(code) == stored_code:
                     return Response('Phone number verified.')
                 else:
-                    return Response('Phone number not verified.')
+                    return Response('Wrong code phone number not verified.')
             else:
                 return Response('User does not exist.')
 
@@ -55,30 +56,35 @@ class Resend(APIView):
 
                 code_str = ''.join(str(item) for item in code_items)
                 phone_str = user.phone_number
+                try:
+                    code_user = Code.objects.get(user=user.id)
+                    if code_user:
+                        Code.objects.filter(
+                            user=user.id).update(number=code_str)
+                        client.messages \
+                            .create(
+                                body=f"Hi! Your user verification code is {code_str}",
+                                from_='+12563803438',
+                                to=f'{phone_str}'
+                            )
 
-                code_user = Code.objects.get(user=user.id)
-
-                if code_user:
-                    Code.objects.filter(user=user.id).update(number=code_str)
-                    client.messages \
-                        .create(
-                            body=f"Hi! Your user verification code is {code_str}",
-                            from_='+12563803438',
-                            to=f'{phone_str}'
-                        )
-
-                    return Response('verification code resent.')
-                else:
-                    Code.objects.create(number=code_str, user=user.id)
-                    client.messages \
-                        .create(
-                            body=f"Hi! Your user verification code is {code_str}",
-                            from_='+12563803438',
-                            to=f'{phone_str}'
-                        )
-
-                    return Response('verification code sent.')
-
+                        return Response('verification code resent.')
+                except Code.DoesNotExist:
+                    myUser = get_object_or_404(User, id=user.id)
+                    print(myUser)
+                    Code.objects.create(number=code_str, user=myUser)
+                    return Response('Code dose not exist but it has been created')
+                finally:
+                    try:
+                        client.messages \
+                            .create(
+                                body=f"Hi! Your user verification code is {code_str}",
+                                from_='+12563803438',
+                                to=f'{phone_str}'
+                            )
+                        return Response('verification code sent.')
+                    except:
+                        return Response('Twilio failed to establish a new connection, pls check your network connection and resend again.')
             else:
                 return Response('User does not exist.')
         else:
