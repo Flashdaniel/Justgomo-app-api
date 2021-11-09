@@ -30,7 +30,7 @@ class ValidatePhone(APIView):
                     else:
                         return Response('Wrong code phone number not verified.')
             except User.DoesNotExist:
-                raise Exception('User does not exist.')
+                return Response('User does not exist.')
             else:
                 return Response('User does not exist.')
 
