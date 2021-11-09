@@ -7,6 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class CurrentUser(APIView):
+    """Gets the current login user"""
+
     def get(self, request):
         if request.user:
             serializer = UserSerializer(request.user)
@@ -15,6 +17,8 @@ class CurrentUser(APIView):
 
 
 class CustomUserCreate(APIView):
+    """Creates a new user"""
+
     permission_classes = [AllowAny]
 
     def post(self, request):
