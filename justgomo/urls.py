@@ -21,7 +21,7 @@ urlpatterns = [
          include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('doc/', include_docs_urls(title='JustGomo')),
+    path('', include_docs_urls(title='JustGomo API')),
     path('schema', get_schema_view(
         title="JustGomo",
         description="API on the JustGomo",
