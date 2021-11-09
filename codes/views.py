@@ -19,15 +19,18 @@ class ValidatePhone(APIView):
 
         if email and code:
             email_verify = str(email)
-            user = User.objects.get(email__iexact=email_verify)
-            if user:
-                code_str = str(user.code)
+            try:
+                user = User.objects.get(email__iexact=email_verify)
+                if user:
+                    code_str = str(user.code)
 
-                stored_code = code_str
-                if str(code) == stored_code:
-                    return Response('Phone number verified.')
-                else:
-                    return Response('Wrong code phone number not verified.')
+                    stored_code = code_str
+                    if str(code) == stored_code:
+                        return Response('Phone number verified.')
+                    else:
+                        return Response('Wrong code phone number not verified.')
+            except User.DoesNotExist:
+                raise Exception('User does not exist.')
             else:
                 return Response('User does not exist.')
 
