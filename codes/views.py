@@ -65,12 +65,12 @@ class Resend(APIView):
                     if code_user:
                         Code.objects.filter(
                             user=user.id).update(number=code_str)
-                        client.messages \
-                            .create(
-                                body=f"Hi! Your user verification code is {code_str}",
-                                from_='+12563803438',
-                                to=f'{phone_str}'
-                            )
+                        # client.messages \
+                        #     .create(
+                        #         body=f"Hi! Your user verification code is {code_str}",
+                        #         from_='+12563803438',
+                        #         to=f'{phone_str}'
+                        #     )
 
                         return Response('verification code resent.')
                 except Code.DoesNotExist:
@@ -78,17 +78,17 @@ class Resend(APIView):
                     print(myUser)
                     Code.objects.create(number=code_str, user=myUser)
                     return Response('Code dose not exist but it has been created')
-                finally:
-                    try:
-                        client.messages \
-                            .create(
-                                body=f"Hi! Your user verification code is {code_str}",
-                                from_='+12563803438',
-                                to=f'{phone_str}'
-                            )
-                        return Response('verification code sent.')
-                    except:
-                        return Response('Twilio failed to establish a new connection, pls check your network connection and resend again.')
+                # finally:
+                #     try:
+                #         client.messages \
+                #             .create(
+                #                 body=f"Hi! Your user verification code is {code_str}",
+                #                 from_='+12563803438',
+                #                 to=f'{phone_str}'
+                #             )
+                #         return Response('verification code sent.')
+                #     except:
+                #         return Response('Twilio failed to establish a new connection, pls check your network connection and resend again.')
             else:
                 return Response('User does not exist.')
         else:

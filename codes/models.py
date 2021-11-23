@@ -30,14 +30,14 @@ class Code(models.Model):
             auth_token = os.environ['Auth_token']
             client = Client(account_sid, auth_token)
 
-            message = client.messages \
-                            .create(
-                                body=f"Hi! Your user verification code is {self.number}",
-                                from_='+12563803438',
-                                to=f'{phone_str}'
-                            )
+            # message = client.messages \
+            #                 .create(
+            #                     body=f"Hi! Your user verification code is {self.number}",
+            #                     from_='+12563803438',
+            #                     to=f'{phone_str}'
+            #                 )
 
-            print(message.sid)
+            # print(message.sid)
         except:
             raise Exception('Twilio  Failed to establish a new connection')
         finally:
