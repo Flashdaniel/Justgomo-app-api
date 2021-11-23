@@ -44,7 +44,7 @@ class Resend(APIView):
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
         account_sid = 'AC6daf8291a2423367c34d7f204225fc5f'
-        auth_token = '531c63debc194b874d2ca3e8f726d7a9'
+        auth_token = '5bbe64f02fb649b4a7a31a935b55d12a'
         client = Client(account_sid, auth_token)
 
         if email:
