@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from rest_framework.response import Response
+import os
 import random
 from twilio.rest import Client
 
@@ -25,8 +26,8 @@ class Code(models.Model):
         self.number = code_str
         phone_str = self.user.phone_number
         try:
-            account_sid = 'AC6daf8291a2423367c34d7f204225fc5f'
-            auth_token = '5bbe64f02fb649b4a7a31a935b55d12a'
+            account_sid = os.environ['Account_SID']
+            auth_token = os.environ['Auth_token']
             client = Client(account_sid, auth_token)
 
             message = client.messages \

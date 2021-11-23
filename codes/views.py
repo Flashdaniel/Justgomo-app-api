@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from users.models import User
 from codes.models import Code
+import os
 import random
 from twilio.rest import Client
 
@@ -43,8 +44,8 @@ class Resend(APIView):
 
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
-        account_sid = 'AC6daf8291a2423367c34d7f204225fc5f'
-        auth_token = '5bbe64f02fb649b4a7a31a935b55d12a'
+        account_sid = os.environ['Account_SID']
+        auth_token = os.environ['Auth_token']
         client = Client(account_sid, auth_token)
 
         if email:
